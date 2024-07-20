@@ -19,6 +19,9 @@
 #  index_schools_on_external_id  (external_id) UNIQUE
 #
 class School < ApplicationRecord
+  has_many :school_searches, dependent: :destroy
+  has_many :search_school_params, through: :school_searches
+
   validates :name, presence: true
   validates :external_id, presence: true, uniqueness: true
   validates :lat, presence: true

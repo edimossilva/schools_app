@@ -5,6 +5,11 @@ require "rails_helper"
 RSpec.describe School do
   subject { build(:school) }
 
+  describe "relationships" do
+    it { is_expected.to have_many(:school_searches).dependent(:destroy) }
+    it { is_expected.to have_many(:search_school_params).through(:school_searches) }
+  end
+
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:external_id) }
