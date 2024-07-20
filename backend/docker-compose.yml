@@ -68,6 +68,8 @@ services:
         condition: service_started
       sidekiq:
         condition: service_started
+    command: bash
+    tty: true
   sidekiq:
     <<: *backend
     hostname: sidekiq-app-container
@@ -85,7 +87,7 @@ services:
       retries: 30
   redis_cache:
     image: docker.io/redis:latest
-    hostname: redis
+    hostname: redis_cache
     command: redis-server
     ports:
       - "6380:6379"
