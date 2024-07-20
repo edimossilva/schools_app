@@ -8,14 +8,17 @@ module Api
 
       def index_fetch_only
         schools_data = FetchSchools.result(school_index_contract:).data
-        render json: schools_data, status: :ok
+        schools = schools_data.map { School.from_hash(_1) }
+
+        render json: schools, status: :ok
       end
 
       def index_fetch_and_store_on_db
-        schools_data = FetchSchools.result(school_index_contract:).data
         search_school_param = SyncSearchSchoolParamOnDb.result(school_index_contract:).data
-        schools = SyncSchoolsOnDb.result(schools_data:, search_school_param:).data
+        return render json: search_school_param.schools, status: :ok if search_school_param.schools.any?
 
+        schools_data = FetchSchools.result(school_index_contract:).data
+        schools = SyncSchoolsOnDb.result(schools_data:, search_school_param:).data
         render json: schools, status: :ok
       end
 

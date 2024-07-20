@@ -18,13 +18,12 @@ class SyncSchoolsOnDb < Actor
 
       if school
         school.search_school_params.push(search_school_param)
-        school
       else
         school = School.from_hash(school_data)
         school.search_school_params.push(search_school_param)
         school.save!
-        school
       end
+      school
     end
   end
 end
