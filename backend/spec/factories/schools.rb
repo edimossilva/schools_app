@@ -21,7 +21,7 @@
 FactoryBot.define do
   factory :school do
     name { "Harvard University" }
-    external_id { 166_027 }
+    sequence(:external_id) { _1 }
     lat { "42.374471" }
     lng { "-71.118313" }
     payload do

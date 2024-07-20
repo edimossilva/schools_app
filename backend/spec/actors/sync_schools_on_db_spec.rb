@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe SyncSchoolsOnDb, type: :actor do
   describe "#call" do
-    subject(:call) { described_class.call(schools: schools_data) }
+    subject(:call) { described_class.call(schools_data:, search_school_param:) }
 
     let(:new_school_data) do
       {
@@ -23,21 +23,35 @@ RSpec.describe SyncSchoolsOnDb, type: :actor do
       }
     end
     let(:schools_data) { [new_school_data, existing_school_data] }
+    let(:search_school_param) { create(:search_school_param) }
 
     context "when no school exists" do
       it "creates both schools" do
         expect { call }.to change(School, :count).by(2)
       end
+
+      it "associates schools and search_school_param" do
+        schools = call.data
+        expect(schools.map(&:search_school_params).flatten).to eq([search_school_param, search_school_param])
+      end
     end
 
     context "when only one school exists" do
-      let(:existing_school) do
+      before do
         create(:school, external_id: "166027", name: "Existing School", lat: "42.374471", lng: "-71.118313")
       end
 
       it "creates only one school" do
-        existing_school
         expect { call }.to change(School, :count).by(1)
+      end
+
+      it "returns 2 schools" do
+        expect(call.data.count).to eq(2)
+      end
+
+      it "associates schools and search_school_param" do
+        schools = call.data
+        expect(schools.map(&:search_school_params).flatten).to eq([search_school_param, search_school_param])
       end
     end
   end

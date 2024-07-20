@@ -7,8 +7,15 @@ module Api
       skip_after_action :verify_authorized
 
       def index_fetch_only
-        result = FetchSchools.result(school_index_contract:)
-        render json: result.data, status: :ok
+        schools_data = FetchSchools.result(school_index_contract:).data
+        schools = schools_data.map { School.from_hash(_1) }
+
+        render json: schools, status: :ok
+      end
+
+      def index_fetch_and_store_on_db
+        schools = SyncSchoolsFromApiOrDb.result(school_index_contract:).data
+        render json: schools, status: :ok
       end
 
       private
