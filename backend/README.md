@@ -6,7 +6,7 @@
 
 ## Getting Started
 - cd backend
-- create a .env file based on .env.example and copy the content of .env.example to .env (`$ cp .env.example .env`)
+- cp .env.example .env
 - docker compose build
 - docker compose up
 - docker compose exec web bundle install

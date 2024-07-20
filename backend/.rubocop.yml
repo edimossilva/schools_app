@@ -91,7 +91,7 @@ RSpec/MessageSpies:
   EnforcedStyle: receive
 
 RSpec/MultipleExpectations:
-  Max: 3
+  Max: 10
 
 RSpec/NestedGroups:
   Max: 5

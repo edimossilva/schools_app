@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe SyncSchoolsOnDb, type: :actor do
   describe "#call" do
-    subject { described_class.call(schools: schools_data) }
+    subject(:call) { described_class.call(schools: schools_data) }
 
     let(:new_school_data) do
       {
@@ -26,7 +26,7 @@ RSpec.describe SyncSchoolsOnDb, type: :actor do
 
     context "when no school exists" do
       it "creates both schools" do
-        is_expected.to change(School, :count).by(2)
+        expect { call }.to change(School, :count).by(2)
       end
     end
 
@@ -36,7 +36,8 @@ RSpec.describe SyncSchoolsOnDb, type: :actor do
       end
 
       it "creates only one school" do
-        is_expected.to change(School, :count).by(1)
+        existing_school
+        expect { call }.to change(School, :count).by(1)
       end
     end
   end
