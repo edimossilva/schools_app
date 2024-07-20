@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe SyncSchoolsOnDb, type: :actor do
   describe "#call" do
-    subject(:call) { described_class.call(schools: schools_data) }
+    subject(:call) { described_class.call(schools_data:) }
 
     let(:new_school_data) do
       {
