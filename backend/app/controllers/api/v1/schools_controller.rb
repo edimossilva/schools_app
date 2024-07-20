@@ -14,11 +14,7 @@ module Api
       end
 
       def index_fetch_and_store_on_db
-        search_school_param = SyncSearchSchoolParamOnDb.result(school_index_contract:).data
-        return render json: search_school_param.schools, status: :ok if search_school_param.schools.any?
-
-        schools_data = FetchSchools.result(school_index_contract:).data
-        schools = SyncSchoolsOnDb.result(schools_data:, search_school_param:).data
+        schools = SyncSchoolsFromApiOrDb.result(school_index_contract:).data
         render json: schools, status: :ok
       end
 
