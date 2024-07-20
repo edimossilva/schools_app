@@ -39,4 +39,11 @@ en:
         password:
           key?: "Password is missing"
           filled?: "Password must be filled"
+        page:
+          key?: "page is missing"
+          filled?: "page must be filled"
+        per_page:
+          key?: "per_page is missing"
+          filled?: "per_page must be filled"
+
 

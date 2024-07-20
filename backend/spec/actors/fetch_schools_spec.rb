@@ -5,6 +5,13 @@ require "rails_helper"
 RSpec.describe FetchSchools, type: :actor do
   describe ".call" do
     let(:school_name) { "The best school" }
+    let(:school_index_contract) do
+      SchoolContracts::Index.call(
+        school_name_like: school_name,
+        page: 0,
+        per_page: 10
+      )
+    end
 
     context "when setup is valid" do
       let(:valid_params) do
@@ -12,6 +19,7 @@ RSpec.describe FetchSchools, type: :actor do
           api_key:,
           fields: "id,school.name,location",
           page: 0,
+          per_page: 10,
           "school.name" => school_name
         }
       end
@@ -37,12 +45,12 @@ RSpec.describe FetchSchools, type: :actor do
       end
 
       it "is successful" do
-        result = described_class.result(school_name_like: school_name)
+        result = described_class.result(school_index_contract:)
         expect(result.success?).to be true
       end
 
       it "returns schools list" do
-        result = described_class.result(school_name_like: school_name)
+        result = described_class.result(school_index_contract:)
         expect(result.data).to eq(schools)
       end
     end
@@ -54,14 +62,14 @@ RSpec.describe FetchSchools, type: :actor do
         end
 
         it "is failure" do
-          result = described_class.result(school_name_like: school_name)
+          result = described_class.result(school_index_contract:)
           expect(result.failure?).to be true
         end
-      end
 
-      it "returns error object" do
-        result = described_class.result(school_name_like: school_name)
-        expect(result.error).to eq(:missing_college_score_card_api_key)
+        it "returns error object" do
+          result = described_class.result(school_index_contract:)
+          expect(result.error).to eq(:missing_college_score_card_api_key)
+        end
       end
     end
   end
