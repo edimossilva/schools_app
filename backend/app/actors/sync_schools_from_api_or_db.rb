@@ -15,7 +15,7 @@ class SyncSchoolsFromApiOrDb < Actor
     search_school_param = SyncSearchSchoolParamOnDb.result(school_index_contract:).data
     return search_school_param.schools if search_school_param.schools.any?
 
-    schools_data = FetchSchools.result(school_index_contract:).data
-    SyncSchoolsOnDb.result(schools_data:, search_school_param:).data
+    schools = FetchSchools.result(school_index_contract:).data
+    SyncSchoolsOnDb.result(schools:, search_school_param:).data
   end
 end

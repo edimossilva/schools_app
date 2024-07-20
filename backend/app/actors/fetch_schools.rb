@@ -18,7 +18,8 @@ class FetchSchools < Actor
   def fetch_schools
     response = Faraday.get(FETCH_SCHOOLS_URL, params)
     json_response = JSON.parse(response.body)
-    json_response["results"]
+    schools_data = json_response["results"]
+    schools_data.map { School.from_hash(_1) }
   end
 
   def params

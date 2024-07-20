@@ -14,13 +14,9 @@ RSpec.describe "Schools" do
           per_page: 10
         }
       end
+
       let(:schools) do
-        [
-          { "id" => 1,
-            "school.name" => school_name_like,
-            "location.lat" => 42.374471,
-            "location.lon" => -71.118313 }
-        ]
+        build_list(:school, 1, external_id: 1, name: school_name_like, lat: "42.374471", lng: "-71.118313")
       end
 
       let(:school_index_contract) do
@@ -65,7 +61,7 @@ RSpec.describe "Schools" do
             "school.name" => school_name_like,
             "location.lat" => 42.374471,
             "location.lon" => -71.118313 }
-        ]
+        ].map { School.from_hash(_1) }
       end
 
       let(:school_index_contract) do
