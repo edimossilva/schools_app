@@ -7,6 +7,13 @@ RSpec.describe "Schools" do
     context "when data is valid" do
       let(:result) { double("Result", data: schools) }
       let(:school_name_like) { "Harvard" }
+      let(:params) do
+        {
+          school_name_like:,
+          page: 0,
+          per_page: 10
+        }
+      end
       let(:schools) do
         [
           { "id" => "1",
@@ -16,9 +23,13 @@ RSpec.describe "Schools" do
         ]
       end
 
+      let(:school_index_contract) do
+        SchoolContracts::Index.call(params)
+      end
+
       before do
-        allow(FetchSchools).to receive(:result).with(school_name_like: school_name_like).and_return(result)
-        get "/api/v1/schools/index_fetch_only", params: { school_name_like: }
+        allow(FetchSchools).to receive(:result).with(school_index_contract:).and_return(result)
+        get "/api/v1/schools/index_fetch_only", params:
       end
 
       it { expect(response.parsed_body).to match(schools) }
