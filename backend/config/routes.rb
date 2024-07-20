@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         collection do
           get "index_fetch_only"
           get "index_fetch_and_store_on_db"
+          get "index_fetch_and_store_on_cache_and_db"
         end
       end
     end
