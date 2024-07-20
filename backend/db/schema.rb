@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_132617) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["params_as_key"], name: "index_search_school_params_on_params_as_key", unique: true
   end
 
   create_table "users", force: :cascade do |t|

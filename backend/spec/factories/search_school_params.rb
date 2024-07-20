@@ -11,6 +11,10 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
+# Indexes
+#
+#  index_search_school_params_on_params_as_key  (params_as_key) UNIQUE
+#
 FactoryBot.define do
   factory :search_school_param do
     params do

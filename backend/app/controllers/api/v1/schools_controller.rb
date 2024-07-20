@@ -13,6 +13,7 @@ module Api
 
       def index_fetch_and_store_on_db
         schools_data = FetchSchools.result(school_index_contract:).data
+        SyncSearchSchoolParamOnDb.result(school_index_contract:).data
         schools = SyncSchoolsOnDb.result(schools_data:).data
 
         render json: schools, status: :ok

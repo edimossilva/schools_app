@@ -9,5 +9,6 @@ class CreateSearchSchoolParams < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+    add_index :search_school_params, :params_as_key, unique: true
   end
 end
