@@ -45,7 +45,7 @@ RSpec.describe FetchSchools, type: :actor do
       let(:api_key) { "secret_api_key" }
 
       before do
-        allow_any_instance_of(described_class).to receive(:api_key).and_return(api_key)
+        allow(ENV).to receive(:fetch).and_return(api_key)
         stub_request(:get, described_class::FETCH_SCHOOLS_URL)
           .with(query: valid_params)
           .to_return(status: 200, body: success_response, headers: { "Content-Type" => "application/json" })

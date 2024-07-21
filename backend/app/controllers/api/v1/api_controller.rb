@@ -26,10 +26,6 @@ module Api
         render json: { error: exception.message }, status: :unprocessable_entity
       end
 
-      def render_not_found(exception)
-        render json: { error: exception.message }, status: :not_found
-      end
-
       def render_bad_request(exception)
         render json: { error: exception.message }, status: :bad_request
       end
