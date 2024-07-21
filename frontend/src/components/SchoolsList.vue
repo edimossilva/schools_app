@@ -18,8 +18,17 @@
       </div>
       <button type="submit" class="btn btn-primary w-100">Search</button>
     </form>
+    <div class="d-flex justify-content-between mb-4">
+      <button class="btn btn-secondary" @click="previousPage" :disabled="page === 0">Previous Page</button>
+      <button class="btn btn-secondary" @click="nextPage">Next Page</button>
+    </div>
     <div v-if="loading" class="text-center text-primary">Loading...</div>
     <div v-if="error" class="text-center text-danger">{{ error }}</div>
+    <div v-if="requestTime !== null" class="card mt-4 mb-4">
+      <div class="card-body">
+        <p class="card-text">The request took <b>{{ requestTime }}</b> milliseconds.</p>
+      </div>
+    </div>
     <div v-if="schools.length > 0" class="row">
       <div v-for="school in schools" :key="school.id" class="col-md-4 mb-4">
         <div
@@ -56,13 +65,15 @@ export default {
       schools: [],
       loading: false,
       error: null,
-      selectedSchool: null
+      selectedSchool: null,
+      requestTime: null
     };
   },
   methods: {
     async fetchSchools() {
       this.loading = true;
       this.error = null;
+      const startTime = performance.now();
 
       try {
         const response = await axios.get(process.env.SCHOOLS_API_URL, {
@@ -72,6 +83,9 @@ export default {
             per_page: this.per_page
           }
         });
+        const endTime = performance.now();
+        this.requestTime = (endTime - startTime).toFixed(2);
+
         this.schools = response.data;
       } catch (error) {
         this.error = 'Failed to fetch schools';
@@ -82,6 +96,16 @@ export default {
     },
     selectSchool(school) {
       this.selectedSchool = school;
+    },
+    nextPage() {
+      this.page++;
+      this.fetchSchools();
+    },
+    previousPage() {
+      if (this.page > 1) {
+        this.page--;
+        this.fetchSchools();
+      }
     }
   }
 };
