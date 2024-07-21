@@ -68,7 +68,6 @@ services:
         condition: service_started
       sidekiq:
         condition: service_started
-    command: bash
     tty: true
   sidekiq:
     <<: *backend
