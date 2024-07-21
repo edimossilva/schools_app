@@ -8,6 +8,7 @@ SimpleCov.start do
   add_group "Lib", "app/lib"
   add_group "Models", "app/models"
   add_group "Mailers", "app/mailers"
+  add_group "Actors", "app/actors"
 
   add_filter "config"
   add_filter %r{^/spec/}
