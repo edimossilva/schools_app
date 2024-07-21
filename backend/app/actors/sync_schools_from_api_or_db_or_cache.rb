@@ -7,7 +7,7 @@ class SyncSchoolsFromApiOrDbOrCache < Actor
 
   def call
     self.data = Rails.cache.fetch(school_index_contract.to_json) do
-      SyncSchoolsFromApiOrDb.result(school_index_contract:).data.to_a
+      SyncSchoolsFromApiOrDb.result(school_index_contract:).data
     end
   end
 end

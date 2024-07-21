@@ -119,6 +119,32 @@ RSpec.describe "Schools" do
     end
   end
 
+  describe "GET #index_fetch_and_store_on_cache_and_db" do
+    let(:do_request) { get "/api/v1/schools/index_fetch_and_store_on_cache_and_db", params: }
+
+    let(:school_index_contract) do
+      SchoolContracts::Index.call(params)
+    end
+
+    let(:schools) { create_list(:school, 1) }
+
+    let(:school_name_like) { "Harvard" }
+    let(:params) do
+      {
+        school_name_like:,
+        page: 0,
+        per_page: 10
+      }
+    end
+
+    it "returns data from SyncSchools" do
+      allow(SyncSchoolsFromApiOrDb).to receive(:result).with(school_index_contract:)
+        .and_return(OpenStruct.new(data: schools))
+      do_request
+      expect(response.parsed_body[0][:id]).to eq(schools[0].id)
+    end
+  end
+
   describe "GET #index" do
     let(:do_request) { get "/api/v1/schools", params: }
 
