@@ -4,41 +4,39 @@ require "rails_helper"
 
 RSpec.describe "Schools" do
   describe "GET /api/v1/schools/index_fetch_only" do
-    context "when data is valid" do
-      let(:result) { double("Result", data: schools) }
-      let(:school_name_like) { "Harvard" }
-      let(:params) do
-        {
-          school_name_like:,
-          page: 0,
-          per_page: 10
-        }
-      end
+    let(:result) { double("Result", data: schools) }
+    let(:school_name_like) { "Harvard" }
+    let(:params) do
+      {
+        school_name_like:,
+        page: 0,
+        per_page: 10
+      }
+    end
 
-      let(:schools) do
-        build_list(:school, 1, external_id: 1, name: school_name_like, lat: "42.374471", lng: "-71.118313")
-      end
+    let(:schools) do
+      build_list(:school, 1, external_id: 1, name: school_name_like, lat: "42.374471", lng: "-71.118313")
+    end
 
-      let(:school_index_contract) do
-        SchoolContracts::Index.call(params)
-      end
+    let(:school_index_contract) do
+      SchoolContracts::Index.call(params)
+    end
 
-      before do
-        allow(FetchSchools).to receive(:result).with(school_index_contract:).and_return(result)
-        get "/api/v1/schools/index_fetch_only", params:
-      end
+    before do
+      allow(FetchSchools).to receive(:result).with(school_index_contract:).and_return(result)
+      get "/api/v1/schools/index_fetch_only", params:
+    end
 
-      it "returns school json formatted" do
-        expected_response = [{
-          id: nil,
-          external_id: 1,
-          name: school_name_like,
-          lat: "42.374471",
-          lng: "-71.118313"
-        }.with_indifferent_access
+    it "returns school json formatted" do
+      expected_response = [{
+        id: nil,
+        external_id: 1,
+        name: school_name_like,
+        lat: "42.374471",
+        lng: "-71.118313"
+      }.with_indifferent_access
 ]
-        expect(response.parsed_body).to match(expected_response)
-      end
+      expect(response.parsed_body).to match(expected_response)
     end
   end
 
@@ -121,8 +119,8 @@ RSpec.describe "Schools" do
     end
   end
 
-  describe "GET #index_fetch_and_store_on_cache_and_db" do
-    let(:do_request) { get "/api/v1/schools/index_fetch_and_store_on_cache_and_db", params: }
+  describe "GET #index" do
+    let(:do_request) { get "/api/v1/schools", params: }
 
     let(:school_index_contract) do
       SchoolContracts::Index.call(params)
@@ -139,32 +137,10 @@ RSpec.describe "Schools" do
       }
     end
 
-    context "when data is not cached" do
-      it "fetches data from the API or DB and stores it in cache" do
-        Rails.cache.clear
-        expect(Rails.cache).to receive(:fetch).with(school_index_contract.to_json).and_call_original
-        expect(SyncSchoolsFromApiOrDb).to receive(:result)
-          .with(school_index_contract: school_index_contract)
-          .and_return(OpenStruct.new(data: schools))
-
-        do_request
-
-        expect(response).to have_http_status(:ok)
-        Rails.cache.clear
-      end
-    end
-
-    context "when data is cached" do
-      it "fetches data from the cache" do
-        Rails.cache.write(school_index_contract.to_json, schools)
-
-        expect(SyncSchoolsFromApiOrDb).not_to receive(:result)
-
-        do_request
-
-        expect(response).to have_http_status(:ok)
-        Rails.cache.clear
-      end
+    it "returns data from SyncSchools" do
+      allow(SyncSchools).to receive(:result).with(school_index_contract:).and_return(OpenStruct.new(data: schools))
+      do_request
+      expect(response.parsed_body[0][:id]).to eq(schools[0].id)
     end
   end
 end
