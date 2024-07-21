@@ -12,8 +12,8 @@ class SyncSearchSchoolParamOnDb < Actor
   private
 
   def sync_search_school_param_on_db(school_index_contract)
-    params_as_key = school_index_contract.to_s
-    SearchSchoolParam.find_or_create_by!(params_as_key:) do |ssp|
+    params_as_key = school_index_contract.to_json
+    SearchSchoolParam.find_or_create_by(params_as_key:) do |ssp|
       ssp.params = school_index_contract
     end
   end

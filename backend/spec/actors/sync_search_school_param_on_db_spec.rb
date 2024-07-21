@@ -28,13 +28,13 @@ RSpec.describe SyncSearchSchoolParamOnDb, type: :actor do
         result = actor.call(school_index_contract: valid_contract)
         expect(result.data).to be_a(SearchSchoolParam)
         expect(result.data.params).to eq(valid_contract.with_indifferent_access)
-        expect(result.data.params_as_key).to eq(valid_contract.to_s)
+        expect(result.data.params_as_key).to eq(valid_contract.to_json)
       end
     end
 
     context "when SearchSchoolParam does exists" do
       let!(:search_school_param) do
-        create(:search_school_param, params: valid_contract, params_as_key: valid_contract.to_s)
+        create(:search_school_param, params: valid_contract, params_as_key: valid_contract.to_json)
       end
 
       it "does not create a SearchSchoolParam record" do

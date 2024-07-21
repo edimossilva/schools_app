@@ -24,15 +24,22 @@ RSpec.describe FetchSchools, type: :actor do
         }
       end
 
-      let(:success_response) { { results: schools }.to_json }
+      let(:success_response) { { results: schools_data }.to_json }
 
-      let(:schools) do
+      let(:schools_data) do
         [
           { "id" => "1",
             "school.name" => school_name,
             "location.lat" => 42.374471,
-            "location.lon" => -71.118313 }
+            "location.lon" => -71.118313 }.transform_keys(&:to_sym)
         ]
+      end
+
+      let(:schools) do
+        build_list(
+          :school, 1, external_id: 1, name: school_name, lat: "42.374471", lng: "-71.118313",
+          payload: schools_data[0]
+        )
       end
 
       let(:api_key) { "secret_api_key" }
@@ -51,7 +58,8 @@ RSpec.describe FetchSchools, type: :actor do
 
       it "returns schools list" do
         result = described_class.result(school_index_contract:)
-        expect(result.data).to eq(schools)
+        expect(result.data[0].external_id).to eq(schools[0].external_id)
+        expect(result.data.length).to eq(1)
       end
     end
 

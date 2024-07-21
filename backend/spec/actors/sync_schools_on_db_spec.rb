@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe SyncSchoolsOnDb, type: :actor do
   describe "#call" do
-    subject(:call) { described_class.call(schools_data:, search_school_param:) }
+    subject(:call) { described_class.call(schools:, search_school_param:) }
 
     let(:new_school_data) do
       {
@@ -23,6 +23,8 @@ RSpec.describe SyncSchoolsOnDb, type: :actor do
       }
     end
     let(:schools_data) { [new_school_data, existing_school_data] }
+    let(:schools) { schools_data.map { School.from_hash(_1) } }
+
     let(:search_school_param) { create(:search_school_param) }
 
     context "when no school exists" do
