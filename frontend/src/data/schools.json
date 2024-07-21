@@ -1,0 +1,94 @@
+{
+  "results": [
+    {
+      "school": {
+        "name": "Florida State University",
+        "city": "Tallahassee",
+        "zip": "32306-1037",
+        "id": 134097,
+        "location.lat": 30.443147,
+        "location.lon": -84.295064
+      }
+    },
+    {
+      "school": {
+        "name": "DeVry University-California",
+        "city": "Ontario",
+        "zip": "91764",
+        "id": 482431,
+        "location.lat": 34.068481,
+        "location.lon": -117.5876
+      }
+    },
+    {
+      "school": {
+        "name": "Harvard University",
+        "city": "Cambridge",
+        "zip": "02138",
+        "id": 166027,
+        "location.lat": 42.374471,
+        "location.lon": -71.118313
+      }
+    },
+    {
+      "school": {
+        "name": "Stanford University",
+        "city": "Stanford",
+        "zip": "94305",
+        "id": 123456,
+        "location.lat": 37.427475,
+        "location.lon": -122.169719
+      }
+    },
+    {
+      "school": {
+        "name": "University of California, Berkeley",
+        "city": "Berkeley",
+        "zip": "94720",
+        "id": 654321,
+        "location.lat": 37.871899,
+        "location.lon": -122.258540
+      }
+    },
+    {
+      "school": {
+        "name": "Massachusetts Institute of Technology",
+        "city": "Cambridge",
+        "zip": "02139",
+        "id": 789101,
+        "location.lat": 42.360091,
+        "location.lon": -71.094160
+      }
+    },
+    {
+      "school": {
+        "name": "University of Chicago",
+        "city": "Chicago",
+        "zip": "60637",
+        "id": 112233,
+        "location.lat": 41.788602,
+        "location.lon": -87.598683
+      }
+    },
+    {
+      "school": {
+        "name": "California Institute of Technology",
+        "city": "Pasadena",
+        "zip": "91125",
+        "id": 445566,
+        "location.lat": 34.147785,
+        "location.lon": -118.144515
+      }
+    },
+    {
+      "school": {
+        "name": "University of Pennsylvania",
+        "city": "Philadelphia",
+        "zip": "19104",
+        "id": 778899,
+        "location.lat": 39.952583,
+        "location.lon": -75.165222
+      }
+    }
+  ]
+}
