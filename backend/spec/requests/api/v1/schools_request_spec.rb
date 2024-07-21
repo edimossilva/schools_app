@@ -96,7 +96,10 @@ RSpec.describe "Schools" do
         }
       end
       let(:search_school_param) do
-        create(:search_school_param, params: school_index_contract, params_as_key: school_index_contract.to_s, schools:)
+        create(
+          :search_school_param, params: school_index_contract, params_as_key: school_index_contract.to_json,
+          schools:
+        )
       end
       let(:schools) { create_list(:school, 2) }
 
@@ -139,7 +142,7 @@ RSpec.describe "Schools" do
     context "when data is not cached" do
       it "fetches data from the API or DB and stores it in cache" do
         Rails.cache.clear
-        expect(Rails.cache).to receive(:fetch).with(school_index_contract.to_s).and_call_original
+        expect(Rails.cache).to receive(:fetch).with(school_index_contract.to_json).and_call_original
         expect(SyncSchoolsFromApiOrDb).to receive(:result)
           .with(school_index_contract: school_index_contract)
           .and_return(OpenStruct.new(data: schools))
@@ -153,7 +156,7 @@ RSpec.describe "Schools" do
 
     context "when data is cached" do
       it "fetches data from the cache" do
-        Rails.cache.write(school_index_contract.to_s, schools)
+        Rails.cache.write(school_index_contract.to_json, schools)
 
         expect(SyncSchoolsFromApiOrDb).not_to receive(:result)
 

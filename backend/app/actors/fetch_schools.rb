@@ -6,19 +6,23 @@ class FetchSchools < Actor
   input :school_index_contract
 
   output :data
+  output :schools_data
 
   def call
     fail!(error: :missing_college_score_card_api_key) if api_key.blank?
-
+    self.schools_data = fetch_schools_data
     self.data = fetch_schools
   end
 
   private
 
-  def fetch_schools
+  def fetch_schools_data
     response = Faraday.get(FETCH_SCHOOLS_URL, params)
     json_response = JSON.parse(response.body)
-    schools_data = json_response["results"]
+    json_response["results"]
+  end
+
+  def fetch_schools
     schools_data.map { School.from_hash(_1) }
   end
 

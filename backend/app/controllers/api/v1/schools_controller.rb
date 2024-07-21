@@ -6,15 +6,21 @@ module Api
       skip_before_action :authenticate_devise_api_token!
       skip_after_action :verify_authorized
 
-      # def index
-      #   search_school_param = SyncSearchSchoolParamOnDb.result(school_index_contract:).data
-      #   schools = Rails.cache.fetch(search_school_param.params_as_key)
-      #   schools ||= search_school_param.schools
-      #   if schools.empty?
+      def index
+        search_school_param = SyncSearchSchoolParamOnDb.result(school_index_contract:).data
+        schools = Rails.cache.fetch(search_school_param.params_as_key)
+        schools ||= search_school_param.schools
 
-      #   end
-
-      # end
+        if schools.empty?
+          result = FetchSchools.result(school_index_contract:)
+          schools_data = result.schools_data
+          schools = result.data
+          schools_data_json = schools_data.to_json
+          school_index_contract_json = school_index_contract.to_json
+          SyncSchoolsJob.perform_async(schools_data_json, school_index_contract_json)
+        end
+        render json: schools, status: :ok
+      end
 
       def index_fetch_only
         schools = FetchSchools.result(school_index_contract:).data
