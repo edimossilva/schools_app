@@ -33,7 +33,7 @@
       <div v-for="school in schools" :key="school.id" class="col-md-4 mb-4">
         <div
           class="card h-100"
-          :class="{ 'selected-card': selectedSchool && selectedSchool.id === school.id }"
+          :class="{ 'selected-card': selectedSchool && selectedSchool.external_id === school.external_id }"
           @click="selectSchool(school)"
           style="cursor: pointer;"
         >
