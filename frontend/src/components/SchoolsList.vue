@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import schoolsApi from '@/services/schoolsApi';
 import SchoolMap from './SchoolMap.vue';
 
 export default {
@@ -76,22 +76,14 @@ export default {
       const startTime = performance.now();
 
       try {
-        const response = await axios.get(process.env.SCHOOLS_API_URL, {
-          params: {
-            school_name_like: this.school_name_like,
-            page: this.page,
-            per_page: this.per_page
-          }
-        });
+        this.schools = await schoolsApi.fetchSchools(this.school_name_like, this.page, this.per_page);
         const endTime = performance.now();
         this.requestTime = (endTime - startTime).toFixed(2);
-
-        this.schools = response.data;
       } catch (error) {
         this.error = 'Failed to fetch schools';
       } finally {
         this.loading = false;
-        this.selectSchool(null)
+        this.selectSchool(null);
       }
     },
     selectSchool(school) {
@@ -102,7 +94,7 @@ export default {
       this.fetchSchools();
     },
     previousPage() {
-      if (this.page > 1) {
+      if (this.page > 0) {
         this.page--;
         this.fetchSchools();
       }
